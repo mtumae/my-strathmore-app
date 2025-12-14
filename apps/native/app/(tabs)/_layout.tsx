@@ -16,31 +16,46 @@ export default function TabLayout() {
 				headerTintColor: themeColorForeground,
 				headerTitleStyle: {
 					color: themeColorForeground,
-					fontWeight: "600",
+					fontWeight: "800",
 				},
 				tabBarStyle: {
 					backgroundColor: themeColorBackground,
+					borderColor:'none'
+					
 				},
 			}}
 		>
+			
 			<Tabs.Screen
-				name="index"
+				name="profile"
 				options={{
-					title: "Home",
+					title: "Profile",
 					tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-						<Ionicons name="home" size={size} color={color} />
+						<Ionicons name="person-circle" size={size} color={color} />
+					),
+				}}
+			/>
+
+			<Tabs.Screen
+				name="work"
+				options={{
+					title: "Work",
+					tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+						<Ionicons name="book-outline" size={size} color={color} />
 					),
 				}}
 			/>
 			<Tabs.Screen
-				name="two"
+				name="fees"
 				options={{
-					title: "Explore",
+					title: "Fees",
 					tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-						<Ionicons name="compass" size={size} color={color} />
+						<Ionicons name="wallet-outline" size={size} color={color} />
 					),
 				}}
 			/>
+			
+		
 		</Tabs>
 	);
 }
