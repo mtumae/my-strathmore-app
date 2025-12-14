@@ -7,9 +7,10 @@ import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
+import AuthForm from "@/components/authForm";
 
 export const unstable_settings = {
-	initialRouteName: "(drawer)",
+	initialRouteName: "(tabs)",
 };
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
@@ -19,12 +20,9 @@ const convex = new ConvexReactClient(convexUrl, {
 
 function StackLayout() {
 	return (
-		<Stack screenOptions={{}}>
-			<Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-			<Stack.Screen
-				name="modal"
-				options={{ title: "Modal", presentation: "modal" }}
-			/>
+		<Stack>
+			<Stack.Screen name="index" options={{ headerShown: false }} />
+			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 		</Stack>
 	);
 }
@@ -36,7 +34,7 @@ export default function Layout() {
 				<KeyboardProvider>
 					<AppThemeProvider>
 						<HeroUINativeProvider>
-							<StackLayout />
+							<StackLayout/>
 						</HeroUINativeProvider>
 					</AppThemeProvider>
 				</KeyboardProvider>
