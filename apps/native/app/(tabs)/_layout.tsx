@@ -19,8 +19,11 @@ export default function TabLayout() {
 					fontWeight: "800",
 				},
 				tabBarStyle: {
-					backgroundColor: themeColorBackground,
-					borderColor:'none'
+					backgroundColor: 'none',
+					borderColor:themeColorBackground,
+					
+	
+			
 					
 				},
 			}}

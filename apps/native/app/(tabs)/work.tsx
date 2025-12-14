@@ -34,8 +34,8 @@ const dummyCourseDetails: CourseDetails[] = [
 		title: 'BICS 1.1',
 		id: 1,
 		courseWork:[
-			{unit:'Unit 1', lecturer:'Bob', work:[{title:'CAT 1', score:'85%'}, {title:'CAT 2', score:'88%'}, {title:'Project', score:'90%'}], 	examMark: 92,},
-			{unit:'Unit 2', lecturer:'John', work:[{title:'CAT 1', score:'80%'}, {title:'CAT 2', score:'82%'}, {title:'Project', score:'85%'}], 	examMark: 72,},
+			{unit:'Introduction to Programming', lecturer:'Lawrence Muriira', work:[{title:'CAT 1', score:'85%'}, {title:'CAT 2', score:'88%'}, {title:'Project', score:'90%'}], 	examMark: 92,},
+			{unit:'Unit 2', lecturer:'John', work:[{title:'CAT 1', score:'21/30'}, {title:'CAT 2', score:'15/30'}, {title:'Project', score:'40/60'}], 	examMark: 72,},
 			{unit:'Unit 3', lecturer:'Michael', work:[{title:'CAT 1', score:'78%'}, {title:'CAT 2', score:'80%'}, {title:'Project', score:'83%'}], 	examMark: 62,},
 		],
 	
@@ -76,36 +76,36 @@ export default function Home() {
 	}
 
 	return (
-		<Container className="flex pt-20">
+		<Container className="flex mt-4">
 
 
-				<View className="flex-row gap-4 overflow-x-scroll">
+				<ScrollView horizontal className="flex-row gap-4 mt-8">
 						{courses.map((c)=>(
-							<View key={c.id}>
+							<View key={c.id} className="overflow-x-scroll">
 								<Pressable 
 								onPress={() => fetchCourseDetails(c.id)}
-								className={`${activeId === c.id ? 'border-amber-300' : ''}  gap-2 rounded-md border p-4`} >
-									<Text className="text-foreground">{c.title}</Text>
+								className={`${activeId === c.id ? 'text-blue-500' : ''}  gap-2 rounded-md p-4`} >
+									<Text className={`${activeId === c.id ? 'text-blue-500' : ''}`}>{c.title}</Text>
 								</Pressable>
 							</View>
 						))}
-				</View>
+				</ScrollView>
 
 
 				<View className="flex-3 items-center justify-center gap-5">
 					{courseDetails.length>0?
 					courseDetails.map((course)=>(
 						<View key={course.id} className="p-8 w-full ">
-							<Text className="text-foreground text-xl font-bold">{course.title}</Text>
+							<Text className="text-foreground text-2xl ">{course.title}</Text>
 							<View className="mt-4 flex gap-10">
 								{course.courseWork.map((cw, index)=>(
-									<Card key={index} className="p-5 rounded-sm text-left border-foreground/10 border">
+									<Card key={index} className="p-5 rounded-lg text-left shadow-sm ">
 										<View className="flex-row justify-between">
 											<View>
-												<Text className="text-foreground text-xl">{cw.unit}</Text>
-												<Text className="text-blue-500">{cw.lecturer}</Text>
+												<Text className="text-muted text-lg">{cw.unit}</Text>
+												<Text className="text-blue-500 text-sm">{cw.lecturer}</Text>
 											</View>
-												<Text className="text-blue-500 text-xl">
+												<Text className="text-blue-500 text-4xl">
 													{`${cw.examMark ?? 'N/A'}`}
 												</Text>
 										</View>
@@ -114,7 +114,7 @@ export default function Home() {
 										{cw.work.map((w, wIndex)=>(
 											<View key={wIndex} className="flex-row justify-between mt-1">
 												<Text className="text-foreground text-sm">{w.title}</Text>
-												<Text className="text-foreground text-sm">{w.score ?? 'N/A'}</Text>
+												<Text className="text-muted text-sm">{w.score ?? 'N/A'}</Text>
 											</View>
 
 										))}
