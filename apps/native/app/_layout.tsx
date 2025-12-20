@@ -1,7 +1,5 @@
 import "@/global.css";
-
 import { ConvexProvider, ConvexReactClient } from "convex/react";
-
 import { Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -10,35 +8,35 @@ import { AppThemeProvider } from "@/contexts/app-theme-context";
 import AuthForm from "@/components/authForm";
 
 export const unstable_settings = {
-	initialRouteName: "(tabs)",
+  initialRouteName: "(tabs)",
 };
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
 const convex = new ConvexReactClient(convexUrl, {
-	unsavedChangesWarning: false,
+  unsavedChangesWarning: false,
 });
 
 function StackLayout() {
-	return (
-		<Stack>
-			<Stack.Screen name="index" options={{ headerShown: false }} />
-			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-		</Stack>
-	);
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    </Stack>
+  );
 }
 
 export default function Layout() {
-	return (
-		<ConvexProvider client={convex}>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<KeyboardProvider>
-					<AppThemeProvider>
-						<HeroUINativeProvider>
-							<StackLayout/>
-						</HeroUINativeProvider>
-					</AppThemeProvider>
-				</KeyboardProvider>
-			</GestureHandlerRootView>
-		</ConvexProvider>
-	);
+  return (
+    <ConvexProvider client={convex}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <KeyboardProvider>
+          <AppThemeProvider>
+            <HeroUINativeProvider>
+              <StackLayout />
+            </HeroUINativeProvider>
+          </AppThemeProvider>
+        </KeyboardProvider>
+      </GestureHandlerRootView>
+    </ConvexProvider>
+  );
 }
