@@ -21,7 +21,13 @@
     "dev:server": "turbo -F @my-strathmore-app/backend dev",
     "dev:setup": "turbo -F @my-strathmore-app/backend dev:setup"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@expo-google-fonts/sansation": "^0.4.0",
+    "@gorhom/bottom-sheet": "^5",
+    "expo-calendar": "^15.0.8",
+    "expo-font": "^14.0.10",
+    "expo-image": "^3.0.11"
+  },
   "devDependencies": {
     "turbo": "^2.5.4",
     "@biomejs/biome": "^2.2.0"

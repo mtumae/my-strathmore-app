@@ -1,13 +1,16 @@
-@import 'tailwindcss';
-@import 'uniwind';
-@import 'heroui-native/styles';
+@import "tailwindcss";
+@import "uniwind";
+@import "heroui-native/styles";
 
 @source './node_modules/heroui-native/lib';
 
+@theme {
+    --color-secondary: #3a5dae; /* this should be blue */
+    --color-tertiary: #cba052; /* this should be gold */
+    --color-destructive: #e03c31; /* this should be red */
+    --color-muted: "#545252"; /* this should be muted */
+}
 
-
-
-@theme{
-    --color-secondary: #FFA500; /* this should be orange */
-   
+Text {
+    font-family: "Sansation_400Regular";
 }
