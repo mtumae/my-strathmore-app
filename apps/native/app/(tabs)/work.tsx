@@ -128,7 +128,7 @@ export default function Home() {
     setCourseDetails(details);
   }
   return (
-    <Container className="flex ">
+    <Container className="flex">
       <ScrollView horizontal className="flex-row gap-10 mt-18 px-1">
         {courses.map((c) => (
           <View key={c.id} className="overflow-x-scroll ">
@@ -159,7 +159,9 @@ export default function Home() {
                   >
                     <View className="flex-row justify-between gap-4">
                       <View>
-                        <Text className="text-muted text-lg">{cw.unit}</Text>
+                        <Text className="text-foreground text-lg">
+                          {cw.unit}
+                        </Text>
                         <Text className="text-secondary text-sm">
                           {cw.lecturer}
                         </Text>
@@ -177,7 +179,7 @@ export default function Home() {
                           <Text className="text-foreground text-sm">
                             {w.title}
                           </Text>
-                          <Text className="text-muted text-sm">
+                          <Text className="text-foreground text-sm">
                             {w.score ?? "N/A"}
                           </Text>
                         </View>

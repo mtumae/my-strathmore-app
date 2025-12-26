@@ -6,6 +6,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import AuthForm from "@/components/authForm";
+import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
+import { authClient } from "@/lib/auth-client";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
@@ -13,6 +15,8 @@ export const unstable_settings = {
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
 const convex = new ConvexReactClient(convexUrl, {
+  // Optionally pause queries until the user is authenticated
+  expectAuth: true,
   unsavedChangesWarning: false,
 });
 
@@ -27,7 +31,7 @@ function StackLayout() {
 
 export default function Layout() {
   return (
-    <ConvexProvider client={convex}>
+    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <KeyboardProvider>
           <AppThemeProvider>
@@ -37,6 +41,6 @@ export default function Layout() {
           </AppThemeProvider>
         </KeyboardProvider>
       </GestureHandlerRootView>
-    </ConvexProvider>
+    </ConvexBetterAuthProvider>
   );
 }
