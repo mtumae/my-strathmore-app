@@ -5,16 +5,33 @@ import { useState } from "react";
 
 import { Button } from "heroui-native";
 import { Ionicons } from "@expo/vector-icons";
+import { authClient } from "@/lib/auth-client";
 
-type FormInput = {
-  admissionNumber: number;
+interface FormInput {
+  email: string;
   password: string;
-};
+}
 
 export default function AuthForm() {
-  const [data, setData] = useState<FormInput>();
+  async function handleGoogleLogin() {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  }
+
+  async function handleLogin({ email, password }: FormInput) {
+    try {
+      await authClient.signIn.email({
+        email: email,
+        password: password,
+      });
+      router.push("/(tabs)/fees");
+    } catch (error) {
+      console.log("Sign in ERROR:", error);
+    }
+  }
   return (
-    <View className=" w-full gap-5 items-center">
+    <View className="w-full gap-5 items-center">
       <View>
         <Text className="text-secondary text-center text-5xl">Welcome</Text>
         <Text className="text-foreground text-center text-2xl">
@@ -57,11 +74,10 @@ export default function AuthForm() {
       <Button
         className="bg-secondary shadow-md h-20 w-full rounded-full items-center"
         onPress={() => {
-          setData({
-            admissionNumber: 188916,
-            password: "mtume",
+          handleLogin({
+            email: "example@example.com",
+            password: "password",
           });
-          router.push("/(tabs)/work");
         }}
       >
         <Ionicons className="" name="log-in-outline" size={24} color="white" />
