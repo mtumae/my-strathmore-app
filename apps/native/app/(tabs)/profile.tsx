@@ -18,6 +18,7 @@ import { Container } from "@/components/container";
 import { useColorScheme } from "react-native";
 import { ThemeToggle } from "@/components/theme-toggle";
 import * as Haptics from "expo-haptics";
+import { api } from "@my-strathmore-app/backend/convex/_generated/api";
 
 import Animated, {
   FadeInLeft,
@@ -30,6 +31,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 import { useAppTheme } from "@/contexts/app-theme-context";
+import { useUser } from "@clerk/clerk-expo";
+import { SignOutButton } from "@/components/signOutButton";
+import { useQuery } from "convex/react";
+import { eventNames } from "node:process";
 
 const time = new Date().toLocaleTimeString();
 
@@ -63,6 +68,11 @@ export default function Home() {
   const themeColorBackground = useThemeColor("background");
   const { toggleTheme, isLight } = useAppTheme();
 
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  const eventData = useQuery(api.events.getRecent);
+  const announcementData = useQuery(api.announcements.getRecent);
+
   return (
     <Container>
       <View className="justify-center p-5 mt-10">
@@ -76,11 +86,12 @@ export default function Home() {
               ? "Good Evening,"
               : "Good Morning,"}
         </Animated.Text>
+
         <Animated.Text
           entering={SlideInUp}
           className="text-secondary text-left text-3xl"
         >
-          Mtume Owino Mutere
+          {user?.firstName} {user?.lastName}
         </Animated.Text>
       </View>
 
@@ -95,11 +106,7 @@ export default function Home() {
           </View>
 
           <Text className="text-foreground text-sm flex-wrap mb-4">
-            The Nairobi Open Day at Strathmore University brought together
-            prospective students and their families to experience the campus
-            firsthand. Visitors toured our classrooms, labs and facilities,
-            interacted with faculty and learned about programs designed to
-            prepare students for real-world success....
+            {announcementData?.content.slice(0, 300)}...
           </Text>
           <View className="flex-row self-end gap-3 items-center">
             <Text className="text-secondary">Read more</Text>
@@ -121,11 +128,22 @@ export default function Home() {
               size={24}
               color={"#3a5dae"}
             />
-            <Text className="text-secondary text-xl ">Upcoming Events</Text>
+            <Text className="text-secondary text-xl">Upcoming Events</Text>
           </View>
 
-          <Text className="text-foreground text-4xl">12 Dec</Text>
-          <Text className="text-foreground">{events[0].title}</Text>
+          {eventData ? (
+            <>
+              <Text className="text-foreground text-4xl">
+                {new Date(eventData.date).toDateString().slice(0, 10)}
+              </Text>
+              <Text className="text-foreground">{eventData.title}</Text>
+            </>
+          ) : (
+            <>
+              <Text className="text-foreground text-4xl">No Events</Text>
+              <Text className="text-foreground">No upcoming events</Text>
+            </>
+          )}
         </Animated.View>
       </View>
 
@@ -140,15 +158,6 @@ export default function Home() {
         </View>
 
         <Pressable
-          style={{
-            backgroundColor: themeColorBackground,
-          }}
-          className=" flex-row items-center-safe gap-3 rounded-full h-10 "
-        >
-          <Ionicons name="log-out-outline" size={24} color={"#e03c31"} />
-          <Text className="text-destructive text-md">Sign out</Text>
-        </Pressable>
-        <Pressable
           onPress={() => {
             if (Platform.OS === "ios") {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -158,7 +167,7 @@ export default function Home() {
           style={{
             backgroundColor: themeColorBackground,
           }}
-          className=" flex-row items-center-safe gap-3 rounded-full h-10"
+          className="border border-foreground/20  px-4 flex-row items-center-safe gap-3 rounded-full h-10"
         >
           {useColorScheme() === "dark" ? (
             <Ionicons
@@ -175,6 +184,17 @@ export default function Home() {
           )}
           <Text className="text-foreground text-md">Change theme</Text>
         </Pressable>
+
+        <Pressable className="border border-foreground/20 px-4 flex-row items-center-safe gap-3 rounded-full h-10">
+          <Ionicons
+            name="lock-open-outline"
+            size={20}
+            color={themeColorForeground}
+          />
+          <Text className="text-foreground">Change Password</Text>
+        </Pressable>
+
+        <SignOutButton />
       </View>
     </Container>
   );

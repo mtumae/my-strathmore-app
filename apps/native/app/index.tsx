@@ -1,7 +1,6 @@
 import { useQuery } from "convex/react";
 import { api } from "../../../packages/backend/convex/_generated/api";
-import { router } from "expo-router";
-import AuthForm from "@/components/authForm";
+
 import { View, Text, Pressable, StyleSheet, Image } from "react-native";
 //import { Image } from "expo-image";
 import { useColorScheme } from "react-native";
@@ -9,7 +8,12 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { useThemeColor } from "heroui-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { BorderlessButton } from "react-native-gesture-handler";
+import { useAuth } from "@clerk/clerk-expo";
+import { Ionicons } from "@expo/vector-icons";
+import SiginInComponenet from "@/components/auth/sign-in";
+import SignUpComponent from "@/components/auth/sign-up";
+import { useState } from "react";
+import { Redirect } from "expo-router";
 
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
@@ -17,10 +21,19 @@ const blurhash =
 export default function Index() {
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
-
+  const [authForm, setAuthForm] = useState("sign-in");
   //const data = useQuery(api.healthCheck.get);
   //
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const { isSignedIn } = useAuth();
+
+  function handleAuthForm() {
+    if (authForm === "sign-in") {
+      return <SiginInComponenet />;
+    } else {
+      return <SignUpComponent />;
+    }
+  }
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -62,7 +75,16 @@ export default function Index() {
             source={require("../assets/images/logos.png")}
             style={styles.logo}
           />
-          <AuthForm />
+          <View>
+            <Text className="text-foreground text-3xl">Welcome</Text>
+            <Text className="text-secondary text-xl">to myStrathmore App</Text>
+          </View>
+
+          {isSignedIn ? (
+            <Redirect href="/(tabs)/profile" />
+          ) : (
+            <SiginInComponenet />
+          )}
         </BottomSheetView>
       </BottomSheet>
     </SafeAreaProvider>
