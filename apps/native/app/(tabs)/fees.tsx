@@ -41,8 +41,6 @@ const years = Object.keys(paymentsByYear).sort(
 );
 
 export default function Home() {
-  const user = useQuery(api.auth.getCurrentUser);
-  console.log(user);
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
   return (

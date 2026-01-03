@@ -5,9 +5,8 @@ import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
-import AuthForm from "@/components/authForm";
-import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { authClient } from "@/lib/auth-client";
+import { ClerkProvider, useUser } from "@clerk/clerk-expo";
+import { tokenCache } from "@clerk/clerk-expo/token-cache";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
@@ -15,8 +14,8 @@ export const unstable_settings = {
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
 const convex = new ConvexReactClient(convexUrl, {
-  // Optionally pause queries until the user is authenticated
-  expectAuth: true,
+  // // Optionally pause queries until the user is authenticated
+  // expectAuth: getUser(),
   unsavedChangesWarning: false,
 });
 
@@ -25,22 +24,25 @@ function StackLayout() {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
     </Stack>
   );
 }
 
 export default function Layout() {
   return (
-    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider>
-          <AppThemeProvider>
-            <HeroUINativeProvider>
-              <StackLayout />
-            </HeroUINativeProvider>
-          </AppThemeProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </ConvexBetterAuthProvider>
+    <ClerkProvider tokenCache={tokenCache}>
+      <ConvexProvider client={convex}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardProvider>
+            <AppThemeProvider>
+              <HeroUINativeProvider>
+                <StackLayout />
+              </HeroUINativeProvider>
+            </AppThemeProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </ConvexProvider>
+    </ClerkProvider>
   );
 }

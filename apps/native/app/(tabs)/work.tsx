@@ -1,11 +1,14 @@
 import { Container } from "@/components/container";
-import { Text, View, ScrollView, Pressable } from "react-native";
+import { Text, View, ScrollView, Pressable, Alert } from "react-native";
 import { Card, Popover, Surface, useThemeColor } from "heroui-native";
 import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "@expo-google-fonts/sansation/useFonts";
 import { Sansation_400Regular } from "@expo-google-fonts/sansation/400Regular";
 import { useColorScheme } from "react-native";
+import { useQuery } from "convex/react";
+import { api } from "@my-strathmore-app/backend/convex/_generated/api";
+import { useUser } from "@clerk/clerk-expo";
+
 interface Unit {
   id: number;
   title: string;
@@ -117,7 +120,9 @@ const courses = [
 export default function Home() {
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
+  const userSession = useUser();
   const [activeId, setActiveId] = useState(1);
+  const userData = useQuery(api.users.get, { id: userSession.user?.id });
   const [courseDetails, setCourseDetails] = useState<CourseDetails[]>([
     dummyCourseDetails[0],
   ]);
@@ -125,8 +130,14 @@ export default function Home() {
     // Simulate fetching data (replace with actual data fetching logic)
     setActiveId(id);
     const details = dummyCourseDetails.filter((course) => course.id === id);
-    setCourseDetails(details);
+    if (details.length > 0) {
+      setCourseDetails(details);
+    } else {
+      setCourseDetails([]);
+    }
   }
+
+  //console.log("USER DATA: ", userData);
   return (
     <Container className="flex">
       <ScrollView horizontal className="flex-row gap-10 mt-18 px-1">
