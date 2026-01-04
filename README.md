@@ -1,3 +1,4 @@
+
 # my-strathmore-app
 
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Convex, and more.
@@ -65,3 +66,10 @@ my-strathmore-app/
 - `bun run check-types`: Check TypeScript types across all apps
 - `bun run dev:native`: Start the React Native/Expo development server
 - `bun run check`: Run Biome formatting and linting
+
+
+---
+
+
+# What the app does
+This is a redesign of the myStrathApp by strathmore. It allows users to login to or register an account and view their details. Said details are assumed to be uploaded by the school (which I should be working on separately). There also includes a chat section where users can communicate  in groups with anyone else who is logged in.

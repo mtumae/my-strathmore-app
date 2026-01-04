@@ -27,6 +27,7 @@ export default defineSchema({
         }),
       ),
     ),
+    chats: v.optional(v.array(v.id("chats"))),
   }).index("by_clerkId", ["clerkId"]),
 
   //munies
@@ -59,8 +60,10 @@ export default defineSchema({
     date: v.string(),
   }),
 
+  //aka groups, groupchats
   chats: defineTable({
     title: v.string(),
+    imageUrl: v.optional(v.string()),
     description: v.string(),
     creationDate: v.string(),
   }),
@@ -68,7 +71,8 @@ export default defineSchema({
   messages: defineTable({
     chatId: v.id("chats"),
     author: v.string(),
-    message: v.string(),
+    imageUrl: v.optional(v.id("_storage")),
+    body: v.optional(v.string()),
     timestamp: v.string(),
     likes: v.optional(v.number()),
     dislikes: v.optional(v.number()),

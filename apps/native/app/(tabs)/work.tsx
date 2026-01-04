@@ -71,7 +71,6 @@ const dummyCourseDetails: CourseDetails[] = [
   {
     title: "BICS 1.2",
     id: 2,
-
     courseWork: [
       {
         unit: "Unit 1",
@@ -126,15 +125,13 @@ export default function Home() {
   const [courseDetails, setCourseDetails] = useState<CourseDetails[]>([
     dummyCourseDetails[0],
   ]);
-  function fetchCourseDetails(id: number) {
+
+  async function fetchCourseDetails(id: number) {
     // Simulate fetching data (replace with actual data fetching logic)
     setActiveId(id);
+
     const details = dummyCourseDetails.filter((course) => course.id === id);
-    if (details.length > 0) {
-      setCourseDetails(details);
-    } else {
-      setCourseDetails([]);
-    }
+    setCourseDetails(details);
   }
 
   //console.log("USER DATA: ", userData);

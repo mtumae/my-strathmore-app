@@ -147,7 +147,7 @@ export default function Home() {
         </Animated.View>
       </View>
 
-      <View className="p-5 gap-8">
+      <View className="p-5 gap-2">
         <View className="flex-row items-center border-b border-foreground/10 pb-3 gap-3">
           <Ionicons
             name="settings-outline"
