@@ -40,7 +40,7 @@ export default function TabLayout() {
         options={{
           title: "Work",
           tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-            <Ionicons name="book-outline" size={size} color={color} />
+            <Ionicons name="book" size={size} color={color} />
           ),
         }}
       />
@@ -49,7 +49,16 @@ export default function TabLayout() {
         options={{
           title: "Fees",
           tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-            <Ionicons name="wallet-outline" size={size} color={color} />
+            <Ionicons name="wallet" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: "Chat",
+          tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+            <Ionicons name="chatbox" size={size} color={color} />
           ),
         }}
       />

@@ -43,7 +43,7 @@ export default function Index() {
   return (
     <SafeAreaProvider style={{ backgroundColor: themeColorBackground }}>
       <Image
-        source={require("../assets/images/campus.jpg")}
+        source={require("../assets/images/campus2.jpg")}
         style={styles.image}
       />
       <BottomSheet
@@ -52,7 +52,7 @@ export default function Index() {
           borderRadius: 30,
         }}
         ref={bottomSheetRef}
-        snapPoints={["20%", "35%", "50%", "100%"]}
+        snapPoints={["20%", "35%", "50%", "60%", "70%", "100%"]}
         onChange={handleSheetChanges}
         backgroundStyle={{
           backgroundColor: "#0000",
@@ -76,8 +76,8 @@ export default function Index() {
             style={styles.logo}
           />
           <View>
-            <Text className="text-foreground text-3xl">Welcome</Text>
-            <Text className="text-secondary text-xl">to myStrathmore App</Text>
+            <Text className="text-foreground text-4xl">Welcome</Text>
+            <Text className="text-secondary text-2xl">to myStrathmore App</Text>
           </View>
 
           {isSignedIn ? (

@@ -9,7 +9,7 @@
  */
 
 import type * as announcements from "../announcements.js";
-import type * as chat from "../chat.js";
+import type * as chats from "../chats.js";
 import type * as events from "../events.js";
 import type * as fees from "../fees.js";
 import type * as healthCheck from "../healthCheck.js";
@@ -26,7 +26,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   announcements: typeof announcements;
-  chat: typeof chat;
+  chats: typeof chats;
   events: typeof events;
   fees: typeof fees;
   healthCheck: typeof healthCheck;
