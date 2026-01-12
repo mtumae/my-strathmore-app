@@ -8,6 +8,7 @@ import { useColorScheme } from "react-native";
 import { useQuery } from "convex/react";
 import { api } from "@my-strathmore-app/backend/convex/_generated/api";
 import { useUser } from "@clerk/clerk-expo";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 interface Unit {
   id: number;
@@ -121,7 +122,7 @@ export default function Home() {
   const themeColorBackground = useThemeColor("background");
   const userSession = useUser();
   const [activeId, setActiveId] = useState(1);
-  const userData = useQuery(api.users.get, { id: userSession.user?.id });
+  const userData = useQuery(api.users.getById, { id: userSession.user?.id });
   const [courseDetails, setCourseDetails] = useState<CourseDetails[]>([
     dummyCourseDetails[0],
   ]);
@@ -136,25 +137,30 @@ export default function Home() {
 
   //console.log("USER DATA: ", userData);
   return (
-    <Container className="flex">
-      <ScrollView horizontal className="flex-row gap-10 mt-18 px-1">
-        {courses.map((c) => (
-          <View key={c.id} className="overflow-x-scroll ">
-            <Pressable
-              onPress={() => fetchCourseDetails(c.id)}
-              className={`${activeId === c.id ? "bg-secondary text-white" : ""}  gap-2 rounded-full transition-all duration-300 p-4`}
-            >
-              <Text
-                style={{ fontFamily: "Sansation_400Regular" }}
-                className={`${activeId === c.id ? "text-white" : "text-foreground"}`}
+    <SafeAreaProvider
+      className="gap-0"
+      style={{ backgroundColor: themeColorBackground }}
+    >
+      <View>
+        <ScrollView horizontal className="mt-18">
+          {courses.map((c) => (
+            <View key={c.id} className="">
+              <Pressable
+                onPress={() => fetchCourseDetails(c.id)}
+                className={`${activeId === c.id ? "bg-secondary text-white" : ""}  gap-2 rounded-full transition-all duration-300 p-4`}
               >
-                {c.title}
-              </Text>
-            </Pressable>
-          </View>
-        ))}
-      </ScrollView>
-      <View className="flex-3 items-center justify-center gap-5">
+                <Text
+                  style={{ fontFamily: "Sansation_400Regular" }}
+                  className={`${activeId === c.id ? "text-white" : "text-foreground"}`}
+                >
+                  {c.title}
+                </Text>
+              </Pressable>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+      <ScrollView className="flex-3 gap-5 ">
         {courseDetails.length > 0 ? (
           courseDetails.map((course) => (
             <View key={course.id} className="p-8 w-full ">
@@ -205,7 +211,7 @@ export default function Home() {
             </Text>
           </View>
         )}
-      </View>
-    </Container>
+      </ScrollView>
+    </SafeAreaProvider>
   );
 }

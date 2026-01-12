@@ -27,6 +27,7 @@ export default defineSchema({
         }),
       ),
     ),
+
     chats: v.optional(v.array(v.id("chats"))),
   }).index("by_clerkId", ["clerkId"]),
 
@@ -66,10 +67,13 @@ export default defineSchema({
     imageUrl: v.optional(v.string()),
     description: v.string(),
     creationDate: v.string(),
+  }).searchIndex("search_title", {
+    searchField: "title",
+    staged: false,
   }),
 
   messages: defineTable({
-    chatId: v.id("chats"),
+    chatId: v.string(),
     author: v.string(),
     imageUrl: v.optional(v.id("_storage")),
     body: v.optional(v.string()),
