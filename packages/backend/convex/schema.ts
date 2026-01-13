@@ -78,6 +78,7 @@ export default defineSchema({
 
   messages: defineTable({
     chatId: v.string(),
+    clerkId: v.optional(v.string()),
     author: v.string(),
     imageUrl: v.optional(v.id("_storage")),
     body: v.optional(v.string()),
