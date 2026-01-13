@@ -13,8 +13,8 @@
   },
   "scripts": {
     "check": "biome check --write .",
-    "dev": "turbo dev",
-    "build": "turbo build",
+    "dev": "node api.js && turbo dev",
+    "build": "node api.js && turbo build",
     "check-types": "turbo check-types",
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",
