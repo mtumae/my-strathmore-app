@@ -13,11 +13,6 @@ build
 .env*.local
 
 # IDEs and editors
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 .idea
 *.swp
 *.swo
@@ -48,3 +43,10 @@ coverage
 .cache
 tmp
 temp
+
+
+
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
