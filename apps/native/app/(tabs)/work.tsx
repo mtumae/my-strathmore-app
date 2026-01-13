@@ -10,6 +10,30 @@ import { api } from "@my-strathmore-app/backend/convex/_generated/api";
 import { useUser } from "@clerk/clerk-expo";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+interface Coursework {
+  title: string;
+  grade: string;
+}
+
+  // Each unit within a course
+interface Unit {
+  title?: string;
+  lecturer?: string;
+  coursework?: Coursework[];
+  examMark?: number;
+}
+
+// Each course containing multiple units
+interface Course {
+  courseId?: string; // e.g., "BICS1.1"
+  units: Unit[];
+}
+
+// The root user schema
+interface UserData {
+  clerkId?: string;
+  courses: Course[];
+}
 
 const dummyCourseDetails = [
   {
@@ -85,14 +109,14 @@ export default function Home() {
   const userSession = useUser();
   const [activeId, setActiveId] = useState("BICS1.1");
   const userData = useQuery(api.users.getById, { id: userSession.user?.id });
-  const [activeCourseDetails, setActiveCourseDetails] = useState([
-    dummyCourseDetails[0],
-  ]);
+  const [activeCourseDetails, setActiveCourseDetails] = useState<Course[]|undefined>(
+    userData?.[0].courses
+  );
 
   function fetchCourseDetails(id: string) {
+    if(!userData) return;
     setActiveId(id);
-
-    const details = dummyCourseDetails.filter((course) => course.courseId === id);
+    const details = userData?.[0].courses?.filter((course) => course.courseId === id) ?? [];
     setActiveCourseDetails(details);
   }
 
@@ -104,10 +128,10 @@ export default function Home() {
     >
       <View>
         <ScrollView horizontal className="mt-18">
-          {dummyCourseDetails.map((c) => (
+          {userData?.[0].courses?.map((c) => (
             <View key={c.courseId} className="">
               <Pressable
-                onPress={() => fetchCourseDetails(c.courseId)}
+                onPress={() => fetchCourseDetails(c.courseId ?? "")}
                 className={`${activeId === c.courseId ? "bg-secondary text-white" : ""}  gap-2 rounded-full transition-all duration-300 p-4`}
               >
                 <Text
@@ -126,7 +150,7 @@ export default function Home() {
             <View key={course.courseId} className="p-8 w-full ">
               <Text className="text-muted text-2xl p-3">{course.courseId}</Text>
               <View className="mt-4 flex gap-10">
-                {course.units.map((cw, index) => (
+                {course.units?.map((cw, index) => (
                   <View
                     key={index}
                     className={`${colorscheme=== "dark" ? "bg-[#242121]" : "bg-[#e0e0e0]"} w-auto text-left rounded-3xl p-10 `}
@@ -134,10 +158,10 @@ export default function Home() {
                     <View className="flex-row justify-between gap-4">
                       <View>
                         <Text className="text-foreground text-lg">
-                          {cw.title}
+                          {cw?.title}
                         </Text>
                         <Text className="text-secondary text-sm">
-                          {cw.lecturer}
+                          {cw?.lecturer}
                         </Text>
                       </View>
                       <Text className="text-secondary text-4xl">

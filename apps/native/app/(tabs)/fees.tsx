@@ -43,7 +43,6 @@ const years = Object.keys(paymentsByYear).sort(
 );
 
 export default function Home() {
-  const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
 
   const session = useUser();
