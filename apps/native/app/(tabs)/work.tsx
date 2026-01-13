@@ -2,8 +2,6 @@ import { Container } from "@/components/container";
 import { Text, View, ScrollView, Pressable, Alert } from "react-native";
 import { Card, Popover, Surface, useThemeColor } from "heroui-native";
 import { useState } from "react";
-import { useFonts } from "@expo-google-fonts/sansation/useFonts";
-import { Sansation_400Regular } from "@expo-google-fonts/sansation/400Regular";
 import { useColorScheme } from "react-native";
 import { useQuery } from "convex/react";
 import { api } from "@my-strathmore-app/backend/convex/_generated/api";
@@ -108,10 +106,12 @@ export default function Home() {
   const colorscheme = useColorScheme();
   const userSession = useUser();
   const [activeId, setActiveId] = useState("BICS1.1");
-  const userData = useQuery(api.users.getById, { id: userSession.user?.id });
+  const userData = useQuery(api.users.getById, { clerkId: userSession.user?.id });
+
   const [activeCourseDetails, setActiveCourseDetails] = useState<Course[]|undefined>(
-    userData?.[0].courses
+    userData?.[0].courses ?? []
   );
+
 
   function fetchCourseDetails(id: string) {
     if(!userData) return;
@@ -120,7 +120,6 @@ export default function Home() {
     setActiveCourseDetails(details);
   }
 
-  //console.log("USER DATA: ", userData);
   return (
     <SafeAreaProvider
       className="gap-0"
@@ -146,7 +145,10 @@ export default function Home() {
         </ScrollView>
       </View>
       <ScrollView className="flex-3 gap-5 ">
-        {activeCourseDetails?.map((course) => (
+        {activeCourseDetails?.length === 0 ?
+        <Text className="text-foreground text-center ">No course details currently available.</Text>
+        :
+        activeCourseDetails?.map((course) => (
             <View key={course.courseId} className="p-8 w-full ">
               <Text className="text-muted text-2xl p-3">{course.courseId}</Text>
               <View className="mt-4 flex gap-10">
