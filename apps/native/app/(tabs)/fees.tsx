@@ -109,8 +109,8 @@ export default function Home() {
                   >
                     <View className="flex-row items-center gap-4">
                       <Ionicons
-                        name="add-circle-outline"
-                        color={"#3a5dae"}
+                        name="add"
+                        color={"#e0e0e0"}
                         size={20}
                       />
 
