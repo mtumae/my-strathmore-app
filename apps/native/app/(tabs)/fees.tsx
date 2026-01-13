@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useColorScheme } from "react-native";
 import { use } from "react";
 import { authClient } from "@/lib/auth-client";
+import { useUser } from "@clerk/clerk-expo";
 import { useQuery } from "convex/react";
 import { api } from "@my-strathmore-app/backend/convex/_generated/api";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -44,6 +45,9 @@ const years = Object.keys(paymentsByYear).sort(
 export default function Home() {
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
+
+  const session = useUser();
+  //const feesdata = useQuery(api.fees.getById, { id: session?.user?.id });
   return (
     <SafeAreaProvider style={{ backgroundColor: themeColorBackground }}>
       <ScrollView>
