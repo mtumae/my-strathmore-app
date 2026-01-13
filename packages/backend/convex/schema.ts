@@ -10,24 +10,28 @@ export default defineSchema({
 
   users: defineTable({
     clerkId: v.optional(v.string()),
-    courses: v.optional(v.array(v.string())), //array of course ids (BICS 1.1)
-    units: v.optional(
+    courses: v.optional(
       v.array(
         v.object({
-          title: v.optional(v.string()),
-          lecturer: v.optional(v.string()),
-          coursework: v.optional(
-            v.array(
-              v.object({
-                title: v.string(),
-                grade: v.string(),
-              }),
-            ),
+          courseId: v.optional(v.string()),
+          units: v.array(
+            v.object({
+              title: v.optional(v.string()),
+              lecturer: v.optional(v.string()),
+              examMarks:v.optional(v.number()),
+              coursework: v.optional(
+                v.array(
+                  v.object({
+                    title: v.string(),
+                    grade: v.string(),
+                  }),
+                ),
+              ),
+            }),
           ),
         }),
       ),
     ),
-
     chats: v.optional(v.array(v.id("chats"))),
   }).index("by_clerkId", ["clerkId"]),
 

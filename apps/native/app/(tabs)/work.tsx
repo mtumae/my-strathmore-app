@@ -10,129 +10,90 @@ import { api } from "@my-strathmore-app/backend/convex/_generated/api";
 import { useUser } from "@clerk/clerk-expo";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-interface Unit {
-  id: number;
-  title: string;
-}
 
-interface Work {
-  title: string;
-  score?: string;
-}
-
-interface CourseWork {
-  unit: string;
-  lecturer?: string;
-  work: Work[];
-  examMark?: number;
-}
-
-interface CourseDetails {
-  title: string;
-  id: number;
-  courseWork: CourseWork[];
-}
-const dummyCourseDetails: CourseDetails[] = [
+const dummyCourseDetails = [
   {
-    title: "BICS 1.1",
-    id: 1,
-    courseWork: [
+    courseId: "BICS1.1",
+    units: [
       {
-        unit: "Introduction to Programming",
-        lecturer: "Lawrence Muriira",
-        work: [
-          { title: "CAT 1", score: "85%" },
-          { title: "CAT 2", score: "88%" },
-          { title: "Project", score: "90%" },
+        coursework: [
+          { grade: "A", title: "Lab 1: Syntax" },
+          { grade: "B+", title: "Midterm Exam" },
         ],
+        lecturer: "Dr. Alice Smith",
+        title: "Introduction to Programming",
+        examMark: 88,
+      },
+      {
+        coursework: [{ grade: "A-", title: "Assignment 1" }],
+        lecturer: "Prof. Robert Brown",
+        title: "Discrete Mathematics",
         examMark: 92,
       },
       {
-        unit: "Unit 2",
-        lecturer: "John",
-        work: [
-          { title: "CAT 1", score: "21/30" },
-          { title: "CAT 2", score: "15/30" },
-          { title: "Project", score: "40/60" },
-        ],
-        examMark: 72,
+        coursework: [{ grade: "A", title: "SQL Project" }],
+        lecturer: "Dr. Carol White",
+        title: "Database Systems",
+        examMark: 85,
       },
       {
-        unit: "Unit 3",
-        lecturer: "Michael",
-        work: [
-          { title: "CAT 1", score: "78%" },
-          { title: "CAT 2", score: "80%" },
-          { title: "Project", score: "83%" },
-        ],
-        examMark: 62,
+        lecturer: "Ms. Jane Doe",
+        title: "Communication Skills",
+         examMark: 85,
+    
+      },
+      {
+        lecturer: "Dr. Kevin Lee",
+        title: "Computer Architecture",
+         examMark: 85,
+
+      },
+      {
+        lecturer: "Prof. Sarah Cook",
+        title: "Operating Systems",
+         examMark: 85,
+      },
+      {
+        lecturer: "Dr. Mark Wood",
+        title: "Ethics in Tech",
+         examMark: 85,
       },
     ],
   },
   {
-    title: "BICS 1.2",
-    id: 2,
-    courseWork: [
+    courseId: "BICS1.2",
+    units: [
       {
-        unit: "Unit 1",
-        lecturer: "Alice",
-        work: [
-          { title: "CAT 1", score: "8%" },
-          { title: "CAT 2", score: "8%" },
-          { title: "Project", score: "9%" },
-        ],
-        examMark: 62,
+        coursework: [{ grade: "B", title: "Sorting Algorithm Task" }],
+        lecturer: "Dr. Alice Smith",
+        title: "Data Structures & Algorithms",
+         examMark: 85,
       },
       {
-        unit: "Unit 2",
-        lecturer: "David",
-        work: [
-          { title: "CAT 1", score: "50%" },
-          { title: "CAT 2", score: "32%" },
-          { title: "Project", score: "25%" },
-        ],
-        examMark: 62,
-      },
-      {
-        unit: "Unit 3",
-        lecturer: "Emma",
-        work: [
-          { title: "CAT 1", score: "88%" },
-          { title: "CAT 2", score: "50%" },
-          { title: "Project", score: "43%" },
-        ],
-        examMark: 62,
+        coursework: [{ grade: "A", title: "Packet Tracer Lab" }],
+        lecturer: "Mr. Tom Harris",
+        title: "Network Fundamentals",
+         examMark: 85,
       },
     ],
   },
-  // Add more course details as needed
 ];
 
-const courses = [
-  { title: "BICS 1.1", id: 1, description: "year 1 semester 1." },
-  { title: "BICS 1.2", id: 2, description: "year 1 semester 2." },
-  { title: "BICS 2.1", id: 3, description: "year 2 semester 1." },
-  { title: "BICS 2.2", id: 4, description: "year 2 semester 2." },
-  { title: "BICS 2.3", id: 5, description: "year 2 semester 2." },
-  { title: "BICS 2.4", id: 6, description: "year 2 semester 2." },
-  { title: "BICS 2.5", id: 7, description: "year 2 semester 2." },
-];
 export default function Home() {
-  const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
+  const colorscheme = useColorScheme();
   const userSession = useUser();
-  const [activeId, setActiveId] = useState(1);
+  const [activeId, setActiveId] = useState("BICS1.1");
   const userData = useQuery(api.users.getById, { id: userSession.user?.id });
-  const [courseDetails, setCourseDetails] = useState<CourseDetails[]>([
+  const [activeCourseDetails, setActiveCourseDetails] = useState([
     dummyCourseDetails[0],
   ]);
 
-  async function fetchCourseDetails(id: number) {
-    // Simulate fetching data (replace with actual data fetching logic)
+  function fetchCourseDetails(id: string) {
     setActiveId(id);
 
-    const details = dummyCourseDetails.filter((course) => course.id === id);
-    setCourseDetails(details);
+    const details = dummyCourseDetails.filter((course) => course.courseId === id);
+    setActiveCourseDetails(details);
   }
 
   //console.log("USER DATA: ", userData);
@@ -143,17 +104,17 @@ export default function Home() {
     >
       <View>
         <ScrollView horizontal className="mt-18">
-          {courses.map((c) => (
-            <View key={c.id} className="">
+          {dummyCourseDetails.map((c) => (
+            <View key={c.courseId} className="">
               <Pressable
-                onPress={() => fetchCourseDetails(c.id)}
-                className={`${activeId === c.id ? "bg-secondary text-white" : ""}  gap-2 rounded-full transition-all duration-300 p-4`}
+                onPress={() => fetchCourseDetails(c.courseId)}
+                className={`${activeId === c.courseId ? "bg-secondary text-white" : ""}  gap-2 rounded-full transition-all duration-300 p-4`}
               >
                 <Text
                   style={{ fontFamily: "Sansation_400Regular" }}
-                  className={`${activeId === c.id ? "text-white" : "text-foreground"}`}
+                  className={`${activeId === c.courseId ? "text-white" : "text-foreground"}`}
                 >
-                  {c.title}
+                  {c.courseId}
                 </Text>
               </Pressable>
             </View>
@@ -161,20 +122,19 @@ export default function Home() {
         </ScrollView>
       </View>
       <ScrollView className="flex-3 gap-5 ">
-        {courseDetails.length > 0 ? (
-          courseDetails.map((course) => (
-            <View key={course.id} className="p-8 w-full ">
-              <Text className="text-muted text-2xl p-3">{course.title}</Text>
+        {activeCourseDetails?.map((course) => (
+            <View key={course.courseId} className="p-8 w-full ">
+              <Text className="text-muted text-2xl p-3">{course.courseId}</Text>
               <View className="mt-4 flex gap-10">
-                {course.courseWork.map((cw, index) => (
+                {course.units.map((cw, index) => (
                   <View
                     key={index}
-                    className={`${useColorScheme() === "dark" ? "bg-[#242121]" : "bg-[#e0e0e0]"} w-auto text-left rounded-3xl p-10 `}
+                    className={`${colorscheme=== "dark" ? "bg-[#242121]" : "bg-[#e0e0e0]"} w-auto text-left rounded-3xl p-10 `}
                   >
                     <View className="flex-row justify-between gap-4">
                       <View>
                         <Text className="text-foreground text-lg">
-                          {cw.unit}
+                          {cw.title}
                         </Text>
                         <Text className="text-secondary text-sm">
                           {cw.lecturer}
@@ -185,7 +145,7 @@ export default function Home() {
                       </Text>
                     </View>
                     <View className="p-3">
-                      {cw.work.map((w, wIndex) => (
+                      {cw.coursework?.map((w, wIndex) => (
                         <View
                           key={wIndex}
                           className="flex-row justify-between mt-1"
@@ -194,7 +154,7 @@ export default function Home() {
                             {w.title}
                           </Text>
                           <Text className="text-foreground text-sm">
-                            {w.score ?? "N/A"}
+                            {w.grade ?? "N/A"}
                           </Text>
                         </View>
                       ))}
@@ -204,13 +164,7 @@ export default function Home() {
               </View>
             </View>
           ))
-        ) : (
-          <View className="justify-center min-h-screen items-center flex-1">
-            <Text className="text-foreground">
-              Select a course to see details
-            </Text>
-          </View>
-        )}
+        }
       </ScrollView>
     </SafeAreaProvider>
   );
